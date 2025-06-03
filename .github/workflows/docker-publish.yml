@@ -15,7 +15,7 @@ jobs:
   test:
     strategy:
       matrix:
-        PHP: [74, 80, 81, 82, 83]
+        PHP: [74, 80, 81, 82, 83, 84]
     runs-on: ubuntu-latest
 
     steps:
@@ -31,6 +31,7 @@ jobs:
           ln -s www80 www81
           ln -s www80 www82
           ln -s www80 www83
+          ln -s www80 www84
 
       - name: Build PHP Image
         env:
@@ -245,5 +246,20 @@ jobs:
           tags: |
             likesistemas/php:83
             likesistemas/php:8.3
+          # ghcr.io/likesistemas/php:83
+          # ghcr.io/likesistemas/php:8.3
+
+      - name: PHP 8.4 -> Build and push
+        continue-on-error: true
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile-80
+          push: true
+          build-args: |
+            PHP_VERSION=8.4-fpm
+          tags: |
+            likesistemas/php:83
+            likesistemas/php:8.4
           # ghcr.io/likesistemas/php:83
           # ghcr.io/likesistemas/php:8.3

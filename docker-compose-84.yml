@@ -1,0 +1,76 @@
+version: '3.5'
+networks:
+  php:
+    name: php
+    driver: bridge
+
+services:
+
+  app:
+    build: 
+      context: .
+      dockerfile: Dockerfile-80
+      args: 
+        - PHP_VERSION=8.4-fpm
+    image: likesistemas/php:84-dev
+    container_name: php_app
+    command: /var/www/create-temp.sh
+    environment:
+      - PHP_NAME=lemp
+      - PHP_PM=dynamic
+      - PHP_PM_MAX_CHILDREN=2
+      - PHP_PM_START_SERVERS=1
+      - PHP_PM_MIN_SPARE_SERVERS=1
+      - PHP_PM_MAX_SPARE_SERVERS=1
+      - PHP_PM_MAX_REQUESTS=500
+      - DB_HOST=mysql
+      - INSTALL_COMPOSER=true
+      - COMPOSER_INSTALL=true
+      - DB_MIGRATE=true
+      - DB_SEED=true
+      - SHOW_ERRORS=true
+      - GITHUB_TOKEN=$GITHUB_TOKEN
+      - JIT=true
+      - OPCACHE_PRELOAD=/var/www/preloader.php
+    volumes:
+      - ./www80/:/var/www/
+      - ./events/:/var/events/
+    networks:
+      - php
+    links:
+      - mysql
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:5.5
+    command: --innodb-use-native-aio=0
+    volumes:
+      - php-mysql-data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_DATABASE=php
+    networks:
+      - php
+
+  nginx:
+    image: likesistemas/nginx:latest
+    container_name: php_nginx
+    restart: on-failure
+    environment:
+      - HOST_PHP=php_app
+      - PORTA_PHP=9000
+      - INDEX_FILE=index.php
+    ports:
+      - 80:80
+    volumes:
+      - ./www80/:/var/www/
+    links:
+      - app
+    depends_on:
+      - app
+    networks:
+      - php
+
+volumes:
+  php-mysql-data:
