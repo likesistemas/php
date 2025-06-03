@@ -9,12 +9,12 @@ services:
   app:
     build: 
       context: .
-      dockerfile: Dockerfile-80
+      dockerfile: Dockerfile-74
       args: 
         - PHP_VERSION=7.4-fpm
     image: likesistemas/php:74-dev
     container_name: php_app
-    command: chmod +x /var/www/create-temp.sh && /var/www/create-temp.sh
+    command: /var/www/create-temp.sh
     environment:
       - PHP_NAME=lemp
       - PHP_PM=dynamic
@@ -29,12 +29,9 @@ services:
       - DB_MIGRATE=true
       - DB_SEED=true
       - SHOW_ERRORS=true
-      - CODECOMMIT_HOST=${CODECOMMIT_HOST:-git-codecommit.us-east-1.amazonaws.com}
-      - GITHUB_TOKEN=$GITHUB_TOKEN
-      - CODECOMMIT_USER=$CODECOMMIT_USER
-      - CODECOMMIT_PASSWORD=$CODECOMMIT_PASSWORD    
+      - GITHUB_TOKEN=$GITHUB_TOKEN  
     volumes:
-      - ./www73/:/var/www/
+      - ./www74/:/var/www/
       - ./events/:/var/events/
     networks:
       - php
@@ -65,7 +62,7 @@ services:
     ports:
       - 80:80
     volumes:
-      - ./www73/:/var/www/
+      - ./www74/:/var/www/
     links:
       - app
     depends_on:

@@ -67,11 +67,11 @@ RUN docker-php-ext-install opcache \
  && ln -s "${PHP_CONFIG_PATH}opcache.ini" "${PHP_GLOBAL_CONFIG_PATH}00-opcache.ini"
 
 # INSTALANDO DOCKERIZE
-ENV DOCKERIZE_VERSION v0.6.1
-RUN apt-get update && apt-get install -y wget \
- && wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
- && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
- && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+ENV DOCKERIZE_VERSION v0.9.3
+RUN apt-get update \
+    && apt-get install -y wget \
+    && wget -O - https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz | tar xzf - -C /usr/local/bin \
+    && apt-get autoremove -yqq --purge wget && rm -rf /var/lib/apt/lists/*
 
 # INSTALANDO SUDO
 RUN apt-get update && apt-get install -y sudo

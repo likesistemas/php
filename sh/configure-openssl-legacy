@@ -1,0 +1,10 @@
+#!/bin/bash
+INI_FILE="/usr/lib/ssl/openssl.cnf"
+echo "Configuring OpenSSL: ${INI_FILE}"
+crudini --del ${INI_FILE} "openssl_init"
+crudini --set ${INI_FILE} "openssl_init" "providers" "provider_sect"
+crudini --set ${INI_FILE} "openssl_init" "providers" "provider_sect"
+crudini --set ${INI_FILE} "provider_sect" "default" "default_sect"
+crudini --set ${INI_FILE} "provider_sect" "legacy" "legacy_sect"
+crudini --set ${INI_FILE} "default_sect" "activate" "1"
+crudini --set ${INI_FILE} "legacy_sect" "activate" "1"

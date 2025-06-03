@@ -1,6 +1,6 @@
 {
-  "name": "like/exemplo73",
-  "description": "Exemplo usando o PHP 7.3 com Phinx.",
+  "name": "like/exemplo74",
+  "description": "Exemplo usando o PHP 7.4 com Phinx.",
   "type": "project",
   "repositories": [
     {
@@ -22,6 +22,14 @@
   "extra": {
     "cleaner-ignore": {
       "robmorgan/phinx": true
+    }
+  },
+  "config": {
+    "platform": {
+      "php": "7.4"
+    },
+    "allow-plugins": {
+      "kylekatarnls/update-helper": true
     }
   }
 }

@@ -26,10 +26,7 @@ services:
       - COMPOSER_INSTALL=true
       - DB_MIGRATE=true
       - DB_SEED=true
-      - CODECOMMIT_HOST=${CODECOMMIT_HOST:-git-codecommit.us-east-1.amazonaws.com}
       - GITHUB_TOKEN=$GITHUB_TOKEN
-      - CODECOMMIT_USER=$CODECOMMIT_USER
-      - CODECOMMIT_PASSWORD=$CODECOMMIT_PASSWORD
     volumes:
       - ./www56/:/var/www/
       - ./events/:/var/events/
