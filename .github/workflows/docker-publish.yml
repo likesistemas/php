@@ -88,50 +88,29 @@ jobs:
           if [[ ! $LOGS =~ "db-ready" ]]; then exit 14; fi
           if [[ ! $LOGS =~ "db-migrated" ]]; then exit 15; fi
           if [[ ! $LOGS =~ "db-sown" ]]; then exit 16; fi
-          if [[ ! $LOGS =~ "ready" ]]; then exit 17; fi
-
-  test-prod:
-    strategy:
-      matrix:
-        PHP: [74, 80, 81, 82, 83]
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Prepare code
-        env:
-          PHP_VERSION: ${{ matrix.PHP }}
-        run: |
-          touch .env
-          echo "GITHUB_TOKEN=${{ secrets.GH_TOKEN }}" >> .env
-          echo "VERSAO=${PHP_VERSION}-dev" >> .env
-          ln -s www80 www81
-          ln -s www80 www82
-          ln -s www80 www83
-      
-      - name: Build images
+          if [[ ! $LOGS =~ "ready" ]]; then exit 17; fi     
+      - name: Build production image
         env:
           PHP_VERSION: ${{ matrix.PHP }}
         run: |
           docker compose -f docker-compose-${PHP_VERSION}.yml -f docker-compose.prod.yml build
 
-      - name: Up environment
+      - name: Up production environment
         env:
           PHP_VERSION: ${{ matrix.PHP }}
         run: |
           docker compose -f docker-compose-${PHP_VERSION}.yml -f docker-compose.prod.yml up --build -d
       
-      - name: Wait environment
+      - name: Wait production environment
         run: |
           echo $(docker run -t --network php jwilder/dockerize -wait http://php_nginx/ -timeout 60s)
       
-      - name: Logs environment
+      - name: Logs production environment
         run: |
           docker ps -a
           docker logs php_app
 
-      - name: Run tests prod
+      - name: Run production tests
         env:
           PHP_VERSION: ${{ matrix.PHP }}
         run: |
