@@ -9,7 +9,7 @@ services:
   app:
     build: 
       context: .
-      dockerfile: Dockerfile-80
+      dockerfile: Dockerfile-74
       args: 
         - PHP_VERSION=7.4-fpm
     image: likesistemas/php:74-dev
@@ -34,7 +34,7 @@ services:
       - CODECOMMIT_USER=$CODECOMMIT_USER
       - CODECOMMIT_PASSWORD=$CODECOMMIT_PASSWORD    
     volumes:
-      - ./www73/:/var/www/
+      - ./www74/:/var/www/
       - ./events/:/var/events/
     networks:
       - php
@@ -65,7 +65,7 @@ services:
     ports:
       - 80:80
     volumes:
-      - ./www73/:/var/www/
+      - ./www74/:/var/www/
     links:
       - app
     depends_on:

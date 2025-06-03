@@ -1,4 +1,4 @@
-ARG PHP_VERSION=7.3-fpm
+ARG PHP_VERSION=8.0-fpm
 FROM php:${PHP_VERSION}
 
 RUN apt-get update && apt-get install -y \
@@ -14,9 +14,9 @@ RUN apt-get update && apt-get install -y \
     fcgiwrap \
     libzip-dev
 
-RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 
-RUN docker-php-ext-install pdo pdo_mysql zip gd intl mbstring bcmath sockets iconv mysqli soap
+RUN docker-php-ext-install pdo_mysql zip gd intl bcmath sockets iconv mysqli soap
 
 # PHP VARIABLES
 ENV PHP_GLOBAL_PATH="/usr/local/etc/php/"
@@ -112,7 +112,7 @@ RUN chmod +x /usr/local/bin/install-composer \
  && chmod +x /usr/local/bin/start-php-fpm \
  && chmod +x /usr/local/bin/entrypoint-cli
 
-COPY www73/public/info.php $PUBLIC_HTML/index.php
+COPY www80/public/info.php $PUBLIC_HTML/index.php
 RUN chown www-data:www-data /var/www/
 RUN chown www-data:www-data $PUBLIC_HTML
 
