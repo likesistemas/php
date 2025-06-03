@@ -14,7 +14,7 @@ services:
         - PHP_VERSION=7.4-fpm
     image: likesistemas/php:74-dev
     container_name: php_app
-    command: chmod +x /var/www/create-temp.sh && /var/www/create-temp.sh
+    command: /var/www/create-temp.sh
     environment:
       - PHP_NAME=lemp
       - PHP_PM=dynamic

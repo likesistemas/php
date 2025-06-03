@@ -12,7 +12,7 @@ services:
       dockerfile: Dockerfile-80
     image: likesistemas/php:80-dev
     container_name: php_app
-    command: chmod +x /var/www/create-temp.sh && /var/www/create-temp.sh
+    command: /var/www/create-temp.sh
     environment:
       - PHP_NAME=lemp
       - PHP_PM=dynamic
