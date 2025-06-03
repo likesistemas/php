@@ -35,19 +35,34 @@ jobs:
           ln -s www80 www82
           ln -s www80 www83
 
-      - name: Run tests
+      - name: Build PHP Image
         env:
           PHP_VERSION: ${{ matrix.PHP }}
         run: |
-          docker pull likesistemas/php -a
+          docker compose -f docker-compose-${PHP_VERSION}.yml build
 
+      - name: Up environment
+        env:
+          PHP_VERSION: ${{ matrix.PHP }}
+        run: |
           docker compose -f docker-compose-${PHP_VERSION}.yml up --build -d
+
+      - name: Wait environment
+        env:
+          PHP_VERSION: ${{ matrix.PHP }}
+        run: |
           echo $(docker run -t --network php jwilder/dockerize -wait http://php_nginx/ -timeout 60s)
-
+      - name: Logs environment
+        env:
+          PHP_VERSION: ${{ matrix.PHP }}
+        run: |
           docker ps -a
-
           docker logs php_app
-
+        
+      - name: Run HTTP tests
+        env:
+          PHP_VERSION: ${{ matrix.PHP }}
+        run: |
           CONTENT=$(curl -s "http://127.0.0.1/");
           echo "CHAMADA HTTP: ${CONTENT}";
 
@@ -56,8 +71,11 @@ jobs:
             exit 1;
           fi
 
+      - name: Run Logs tests
+        env:
+          PHP_VERSION: ${{ matrix.PHP }}
+        run: |
           LOGS_FILE="www${PHP_VERSION}/events.log";
-
           if [ ! -f "$LOGS_FILE" ]; then
             echo "Arquivo de logs não existe. >> ${LOGS_FILE}";
             ls -la "www${PHP_VERSION}/";
@@ -75,16 +93,54 @@ jobs:
           if [[ ! $LOGS =~ "db-sown" ]]; then exit 16; fi
           if [[ ! $LOGS =~ "ready" ]]; then exit 17; fi
 
-      - name: Run tests prod
+  test-prod:
+    strategy:
+      matrix:
+        PHP: [74, 80, 81, 82, 83]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare code
+        env:
+          PHP_VERSION: ${{ matrix.PHP }}
+        run: |
+          touch .env
+          echo "GITHUB_TOKEN=${{ secrets.GH_TOKEN }}" >> .env
+          echo "CODECOMMIT_HOST=${{ secrets.CODECOMMIT_HOST }}" >> .env
+          echo "CODECOMMIT_USER=${{ secrets.CODECOMMIT_USER }}" >> .env
+          echo "CODECOMMIT_PASSWORD=${{ secrets.CODECOMMIT_PASSWORD }}" >> .env
+          echo "VERSAO=${PHP_VERSION}-dev" >> .env
+          ln -s www80 www81
+          ln -s www80 www82
+          ln -s www80 www83
+      
+      - name: Build images
+        env:
+          PHP_VERSION: ${{ matrix.PHP }}
+        run: |
+          docker compose -f docker-compose-${PHP_VERSION}.yml -f docker-compose.prod.yml build
+
+      - name: Up environment
         env:
           PHP_VERSION: ${{ matrix.PHP }}
         run: |
           docker compose -f docker-compose-${PHP_VERSION}.yml -f docker-compose.prod.yml up --build -d
+      
+      - name: Wait environment
+        run: |
           echo $(docker run -t --network php jwilder/dockerize -wait http://php_nginx/ -timeout 60s)
-
+      
+      - name: Logs environment
+        run: |
           docker ps -a
           docker logs php_app
 
+      - name: Run tests prod
+        env:
+          PHP_VERSION: ${{ matrix.PHP }}
+        run: |
           CONTENT=$(curl -s "http://127.0.0.1/");
           echo "CHAMADA HTTP: ${CONTENT}";
 
