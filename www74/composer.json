@@ -23,5 +23,13 @@
     "cleaner-ignore": {
       "robmorgan/phinx": true
     }
+  },
+  "config": {
+    "platform": {
+      "php": "7.4"
+    },
+    "allow-plugins": {
+      "kylekatarnls/update-helper": true
+    }
   }
 }
