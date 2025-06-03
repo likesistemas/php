@@ -27,9 +27,6 @@ jobs:
         run: |
           touch .env
           echo "GITHUB_TOKEN=${{ secrets.GH_TOKEN }}" >> .env
-          echo "CODECOMMIT_HOST=${{ secrets.CODECOMMIT_HOST }}" >> .env
-          echo "CODECOMMIT_USER=${{ secrets.CODECOMMIT_USER }}" >> .env
-          echo "CODECOMMIT_PASSWORD=${{ secrets.CODECOMMIT_PASSWORD }}" >> .env
           echo "VERSAO=${PHP_VERSION}-dev" >> .env
           ln -s www80 www81
           ln -s www80 www82
@@ -108,9 +105,6 @@ jobs:
         run: |
           touch .env
           echo "GITHUB_TOKEN=${{ secrets.GH_TOKEN }}" >> .env
-          echo "CODECOMMIT_HOST=${{ secrets.CODECOMMIT_HOST }}" >> .env
-          echo "CODECOMMIT_USER=${{ secrets.CODECOMMIT_USER }}" >> .env
-          echo "CODECOMMIT_PASSWORD=${{ secrets.CODECOMMIT_PASSWORD }}" >> .env
           echo "VERSAO=${PHP_VERSION}-dev" >> .env
           ln -s www80 www81
           ln -s www80 www82
