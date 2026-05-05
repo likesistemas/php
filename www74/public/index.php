@@ -2,7 +2,13 @@
 
 include '../vendor/autoload.php';
 
-$conn = new PDO('mysql:host=mysql;dbname=php', 'root', '123456');
+$dbHost = getenv('DB_HOST') ?: 'mysql';
+$dbName = getenv('DB_NAME') ?: 'php';
+$dbUser = getenv('DB_USER') ?: 'root';
+$dbPass = getenv('DB_PASS') ?: '123456';
+$dbPort = getenv('DB_PORT') ?: '3306';
+
+$conn = new PDO("mysql:host={$dbHost};port={$dbPort};dbname={$dbName}", $dbUser, $dbPass);
 
 $stmt = $conn->prepare('SELECT nome FROM empresa LIMIT 0,1');
 $stmt->execute();

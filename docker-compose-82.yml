@@ -24,6 +24,10 @@ services:
       - PHP_PM_MAX_SPARE_SERVERS=1
       - PHP_PM_MAX_REQUESTS=500
       - DB_HOST=mysql
+      - DB_NAME=php
+      - DB_USER=root
+      - DB_PASS=123456
+      - DB_PORT=3306
       - INSTALL_COMPOSER=true
       - COMPOSER_INSTALL=true
       - DB_MIGRATE=true
