@@ -65,7 +65,7 @@ RUN pecl install apcu \
  && docker-php-ext-enable apcu
 
 # HABILITANDO OPCACHE
-RUN docker-php-ext-install opcache \
+RUN docker-php-ext-install opcache || echo "Opcache could not be installed via ext-install. Continuing." \
  && ln -s "${PHP_CONFIG_PATH}opcache.ini" "${PHP_GLOBAL_CONFIG_PATH}00-opcache.ini"
 
 # INSTALANDO DOCKERIZE
