@@ -17,4 +17,6 @@ function testWriteFile($folder, $createFolder=false, $content='123') {
     }
 }
 
-testWriteFile(__DIR__ . "/./temp/");
+if (isset($argv[0]) && realpath($argv[0]) === __FILE__) {
+    testWriteFile(__DIR__ . "/./temp/", true);
+}
