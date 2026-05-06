@@ -32,6 +32,15 @@ services:
       - GITHUB_TOKEN=$GITHUB_TOKEN
       - JIT=true
       - OPCACHE_PRELOAD=/var/www/preloader.php
+      - PHINX_DBADAPTER=mysql
+      - PHINX_DBHOST=mysql
+      - PHINX_DBNAME=php
+      - PHINX_DBUSER=root
+      - PHINX_DBPASS=${DB_PASS:-123456}
+      - PHINX_DBPORT=3306
+      - DB_NAME=php
+      - DB_USER=root
+      - DB_PASS=${DB_PASS:-123456}
     volumes:
       - ./www80/:/var/www/
       - ./events/:/var/events/
@@ -48,7 +57,7 @@ services:
     volumes:
       - php-mysql-data:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_ROOT_PASSWORD=${DB_PASS:-123456}
       - MYSQL_DATABASE=php
     networks:
       - php
