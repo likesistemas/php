@@ -1,6 +1,14 @@
 ARG PHP_VERSION=8.0-fpm
 FROM php:${PHP_VERSION}
 
+# PHP 8.0's Debian Bullseye base is EOL. Use a fixed historical snapshot;
+# it makes builds reproducible but intentionally does not provide security updates.
+RUN rm -f /etc/apt/sources.list /etc/apt/sources.list.d/* \
+ && printf '%s\n' \
+    'deb [check-valid-until=no] https://snapshot.debian.org/archive/debian/20240311T000000Z bullseye main' \
+    'deb [check-valid-until=no] https://snapshot.debian.org/archive/debian-security/20240311T000000Z bullseye-security main' \
+    > /etc/apt/sources.list
+
 RUN apt-get update && apt-get install -y \
     zlib1g-dev \
     libjpeg-dev\

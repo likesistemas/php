@@ -1,5 +1,19 @@
 # PHP
 
+> **Aviso de legado e segurança:** as imagens `7.4`, `8.0` e `8.1` são mantidas
+> apenas para compatibilidade de aplicações em migração. Essas versões estão fora
+> de suporte e permanecem vulneráveis a GHSA-w8hw-w9fx-j79w e GHSA-6wmf-4rv5-p3rp
+> quando não há versão corrigida oficial para seus branches. Não as use em sistemas
+> expostos; migre para uma versão suportada. APT dos builds 7.4/8.0 usa um snapshot
+> Debian histórico fixo, sem atualizações de segurança.
+
+Os builds suportados fixam os patches PHP oficiais `8.2.35`, `8.3.36`, `8.4.27`
+e `8.5.12` para incorporar as correções conhecidas dos advisories.
+
+O Dev Container habilita Docker-outside-of-Docker: montar o socket concede ao
+container acesso equivalente a administrador/root ao daemon e host Docker. Use-o
+somente em ambiente confiável; não são montados arquivos de segredos.
+
 Um container com PHP-FPM, para utilizar use o seguinte comando:
 
 ```

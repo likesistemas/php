@@ -1,0 +1,16 @@
+{
+  "name": "PHP image development",
+  "image": "mcr.microsoft.com/devcontainers/base:bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+      "moby": true,
+      "installDockerBuildx": true,
+      "dockerDashComposeVersion": "v2"
+    }
+  },
+  "remoteUser": "vscode",
+  "workspaceFolder": "/workspaces/php",
+  "mounts": [
+    "source=${localWorkspaceFolder},target=/workspaces/php,type=bind,consistency=cached"
+  ]
+}
