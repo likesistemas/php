@@ -1,6 +1,24 @@
 ARG PHP_VERSION=8.0-fpm
 FROM php:${PHP_VERSION}
 
+# PHP 8.0/8.1 use a fixed historical Bullseye snapshot only when the actual
+# base image is Bullseye; other suites retain their upstream APT sources.
+ARG PHP_VERSION
+RUN case "${PHP_VERSION}" in \
+      8.0|8.0-*|8.1|8.1-*) \
+        . /etc/os-release; \
+        if [ "${VERSION_CODENAME:-}" = bullseye ]; then \
+          rm -f /etc/apt/sources.list /etc/apt/sources.list.d/*; \
+          printf '%s\n' \
+            'deb [check-valid-until=no] https://snapshot.debian.org/archive/debian/20240311T000000Z bullseye main' \
+            'deb [check-valid-until=no] https://snapshot.debian.org/archive/debian-security/20240311T000000Z bullseye-security main' \
+            > /etc/apt/sources.list; \
+        else \
+          echo "Keeping upstream APT sources for ${PHP_VERSION} on ${VERSION_CODENAME:-unknown}"; \
+        fi ;; \
+      *) ;; \
+    esac
+
 RUN apt-get update && apt-get install -y \
     zlib1g-dev \
     libjpeg-dev\

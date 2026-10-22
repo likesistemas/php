@@ -11,7 +11,7 @@ services:
       context: .
       dockerfile: Dockerfile-80
       args: 
-        - PHP_VERSION=8.3-fpm
+        - PHP_VERSION=8.3.36-fpm
     image: likesistemas/php:83-dev
     container_name: php_app
     command: /var/www/create-temp.sh
