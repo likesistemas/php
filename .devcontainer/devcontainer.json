@@ -9,8 +9,5 @@
     }
   },
   "remoteUser": "vscode",
-  "workspaceFolder": "/workspaces/php",
-  "mounts": [
-    "source=${localWorkspaceFolder},target=/workspaces/php,type=bind,consistency=cached"
-  ]
+  "workspaceFolder": "/workspaces/php"
 }
